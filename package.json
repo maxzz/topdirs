@@ -1,0 +1,22 @@
+{
+    "name": "topdirs",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "engines": {
+        "node": "*"
+    },
+    "scripts": {
+        "dev": "parcel src/index.ts --target node",
+        "build": "parcel build src/index.ts --target node --no-source-maps",
+        "build-test": "parcel build src/index.ts --target node --no-source-maps --no-minify"
+    },
+    "devDependencies": {
+        "@types/node": "^13.1.7",
+        "typescript": "^3.7.4"
+    },
+    "dependencies": {
+        "chalk": "^3.0.0",
+        "mkdir-p": "^0.0.7"
+    }
+}
