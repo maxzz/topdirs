@@ -25,13 +25,13 @@ namespace app {
                 let rv: string[] = [];
                 scanSubDirs(root, 1, rv);
 
-                console.log(`from "${root}"`);
+                console.log(chalk.gray(`"${root}" sub-folders to create: ${rv.length}`));
                 rv.forEach((sub) => {
                     let short = path.relative(root, sub);
                     let last = names.length === 1 ? '' : path.basename(root);
                     let newName = path.join(dest, last, short);
 
-                    console.log(`  to "${newName}"`);
+                    console.log(chalk.gray(`  creating "${newName}"`));
                     osutils.mkdirSync(newName);
                 });
             }
@@ -44,7 +44,7 @@ function genDestFolderName(): string {
 }
 
 function main(): void {
-    console.log(`${chalk.cyan.bold('topdirs')} will replicate folders structure wo/ files.`);
+    console.log(`\n${chalk.cyan.bold('topdirs')} will replicate folders structure wo/ files.`);
 
     let newArgs = process.argv.slice(2);
     if (!newArgs.length) {
@@ -53,12 +53,12 @@ function main(): void {
         return;
     }
 
-    console.log('Starting folders structure replication...\n');
+    console.log('Starting sub-folders structure replication...');
 
     let dest = genDestFolderName();
     app.handleNames(dest, newArgs);
 
-    console.log('\nDone.\n');
+    console.log(chalk.cyan.bold('Done.\n'));
 } //main()
 
 main();

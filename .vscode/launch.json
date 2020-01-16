@@ -11,10 +11,13 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\dist\\index.js",
+            "program": "${workspaceFolder}\\dist\\dev.js",
             "console": "integratedTerminal",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
+            ],
+            "args": [
+                "C:/Users/max/Desktop/_to down/[9_] Previuos 06, 2019"
             ]
         }
     ]
