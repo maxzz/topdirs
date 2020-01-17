@@ -5,8 +5,12 @@ import chalk from 'chalk';
 import { osutils } from './utils/utils';
 
 namespace app {
+    export let options = {
+        all: false
+    };
+
     function isOurdir(name: string): boolean {
-        return /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
+        return options.all || /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
     }
     function scanSubDirs(name: string, level: number, rv_names: string[]) {
         fs.readdirSync(name).forEach((subName: string) => {
@@ -20,6 +24,8 @@ namespace app {
         });
     } //scanSubDirs()
     export function handleNames(dest: string, names: string[]) {
+        console.log('Starting sub-folders structure replication...');
+
         names.forEach((root) => {
             if (osutils.isDirectory(root)) {
                 let rv: string[] = [];
@@ -49,29 +55,51 @@ const cli = {
     help: [
         "",
         "Syntax:",
-        `   ${chalk.cyan.bold('topdirs')} folder(s)\n`,
-        `   topdirs will replicate folders structure wo/ coping files.`,
-        "   The root of created folders tree will be located at desktop with name like",
-        `   "copy 01.16.20 at 20.07.30.151" where date will be the current date.`,
+        `    ${chalk.cyan.bold('topdirs')} [options] folder(s)\n`,
+        `    topdirs will replicate folders structure wo/ coping files.`,
+        "    The root of created folders tree will be located at desktop with name like",
+        `    "copy 01.16.20 at 20.07.30.151" where date will be the current date.`,
         "",
-        `   Specify one or more folder names to replicate folders structure.`,
+        `    Specify one or more folder names to replicate folders structure.`,
+        "",
+        "Options:",
+        "    --help, -h      help",
+        "    --version, -v   version",
+        "    --all, -a       copy all sub-folders otherwise only folders with name started with '[<numbers>]name'",
     ]
 };
+
+const minimist = require('minimist');
 
 function main(): void {
     console.log(`${cli.title} ${cli.version}`);
 
-    let args = process.argv.slice(2);
-    if (!args.length) {
+    let args = minimist(process.argv.slice(2), {
+        boolean: [ 'all', 'version', 'help' ],
+        alias: { a: 'all', v: 'version' },
+        default: { all: false }
+    });
+
+    const targets = args._ || [];
+    app.options.all = args.all;
+
+    if (args.version) {
+        return;
+    }
+
+    if (args.help) {
+        console.log(cli.help.join('\n'));
+        return;
+    }
+
+    if (!targets.length) {
         console.log(cli.help.join('\n'));
         console.log(chalk.red(`\n   Nothing to do with args:\n${chalk.gray(process.argv.reduce((acc, _) => acc += `\t${_}\n`, ''))}`));
         return;
     }
 
-    console.log('Starting sub-folders structure replication...');
-
     let dest = genDestFolderName();
-    app.handleNames(dest, args);
+    app.handleNames(dest, targets);
 
     console.log(chalk.cyan.bold('Done.\n'));
 } //main()

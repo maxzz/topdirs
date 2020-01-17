@@ -17,7 +17,8 @@
                 "${workspaceFolder}/**/*.js"
             ],
             "args": [
-                "C:/Users/max/Desktop/_to down/[9_] Previuos 06, 2019"
+                "C:/Users/max/Desktop/_to down/[9_] Previuos 06, 2019",
+                //"--help",
             ]
         }
     ]

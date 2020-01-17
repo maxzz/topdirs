@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "chalk": "^3.0.0",
+        "minimist": "^1.2.0",
         "mkdir-p": "^0.0.7"
     }
 }
