@@ -25,13 +25,13 @@ namespace app {
                 let rv: string[] = [];
                 scanSubDirs(root, 1, rv);
 
-                console.log(chalk.gray(`"${root}" sub-folders to create: ${rv.length}`));
+                console.log(chalk.green(`    "${root}" creating ${rv.length} sub-folder${rv.length === 1 ?'':'s'}:\n`));
                 rv.forEach((sub) => {
                     let short = path.relative(root, sub);
                     let last = names.length === 1 ? '' : path.basename(root);
                     let newName = path.join(dest, last, short);
 
-                    console.log(chalk.gray(`  creating "${newName}"`));
+                    console.log(chalk.gray(`    creating "${newName}"`));
                     osutils.mkdirSync(newName);
                 });
             }
@@ -40,23 +40,38 @@ namespace app {
 } //namespace app
 
 function genDestFolderName(): string {
-    return osutils.ensureNameUnique(`${osutils.getDesktopPath()}/copy ${osutils.nowDayTime()}`, false);
+    return osutils.ensureNameUnique(path.join(osutils.getDesktopPath(), `copy ${osutils.nowDayTime()}`), false);
 }
 
-function main(): void {
-    console.log(`\n${chalk.cyan.bold('topdirs')} will replicate folders structure wo/ files.`);
+const cli = {
+    version: '1.0.2',
+    title: `${chalk.cyan.bold('topdirs')}`,
+    help: [
+        "",
+        "Syntax:",
+        `   ${chalk.cyan.bold('topdirs')} folder(s)\n`,
+        `   topdirs will replicate folders structure wo/ coping files.`,
+        "   The root of created folders tree will be located at desktop with name like",
+        `   "copy 01.16.20 at 20.07.30.151" where date will be the current date.`,
+        "",
+        `   Specify one or more folder names to replicate folders structure.`,
+    ]
+};
 
-    let newArgs = process.argv.slice(2);
-    if (!newArgs.length) {
-        console.log(chalk.red(`\nSpecify one or more folder names to replicate folders structure.`));
-        console.log(`Nothing to do with args:\n[${process.argv}]\n`);
+function main(): void {
+    console.log(`${cli.title} ${cli.version}`);
+
+    let args = process.argv.slice(2);
+    if (!args.length) {
+        console.log(cli.help.join('\n'));
+        console.log(chalk.red(`\n   Nothing to do with args:\n${chalk.gray(process.argv.reduce((acc, _) => acc += `\t${_}\n`, ''))}`));
         return;
     }
 
     console.log('Starting sub-folders structure replication...');
 
     let dest = genDestFolderName();
-    app.handleNames(dest, newArgs);
+    app.handleNames(dest, args);
 
     console.log(chalk.cyan.bold('Done.\n'));
 } //main()

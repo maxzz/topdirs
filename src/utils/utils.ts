@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { homedir } from 'os';
 const mkdir = require('mkdir-p');
 
 export namespace osutils {
@@ -58,10 +59,11 @@ export namespace osutils {
     } //ensureNameUnique()
 
     export function getDesktopPath(): string {
-        if (!process.env.USERPROFILE) {
-            throw Error('User HOME is undefined');
+        let home = homedir();
+        if (!home) {
+            throw new Error('User HOME is undefined');
         }
-        return path.join(process.env.USERPROFILE, 'Desktop');
+        return path.join(home, 'Desktop');
     }
 
     export function nowDay(d: Date): string {
