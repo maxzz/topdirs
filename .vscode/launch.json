@@ -18,6 +18,7 @@
             "args": [
                 //"C:/Users/maxzz/Desktop/_to down/[9_] Previuos 06, 2019",
                 "C:/Users/maxzz/Desktop/10",
+                "--all"
                 //"--help",
             ],
             //"console": "integratedTerminal",
