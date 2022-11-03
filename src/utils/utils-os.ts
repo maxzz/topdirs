@@ -3,7 +3,7 @@ import * as path from 'path';
 import { homedir } from 'os';
 const mkdir = require('mkdir-p');
 
-export namespace osutils {
+export namespace OsUtils {
     export function zeros(str_: string | any, total_: number): string {
         // Returns str_ prefixed with '0's.
         if (typeof str_ !== 'string') {
