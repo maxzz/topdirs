@@ -17,7 +17,9 @@
     },
     "scripts": {
         "dev": "tsc -w",
-        "build": "parcel build src/index.ts --no-source-maps"
+        "build-cli": "parcel build src/index.ts --no-source-maps",
+        "build": "tsc",
+        "makebin": "yarn build && pkg -t host -o topdirs dist/index.js"
     },
     "dependencies": {
         "chalk": "^4.0.0",

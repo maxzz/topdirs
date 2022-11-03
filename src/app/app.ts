@@ -38,12 +38,6 @@ export function handleNames(dest: string, names: string[]) {
 
         const dirNames = scanSubDirs(root, 1);
 
-        // console.log(chalk.green(`Creating ${dirNames.length} sub-folder${dirNames.length === 1 ? '' : 's'} from "${root}":`));
-
-        // console.log(chalk.green(`Creating ${dirNames.length} sub-folder${dirNames.length === 1 ? '' : 's'}:`));
-        // console.log(chalk.green(`    from "${root}":`));
-        // console.log(chalk.green(`    to   "${dest}":`));
-
         console.log(chalk.green(`Creating ${dirNames.length} sub-folder${dirNames.length === 1 ? '' : 's'}:`));
         console.log(chalk.green(`    src "${root}"`));
         console.log(chalk.green(`    dst "${dest}"`));
@@ -53,10 +47,8 @@ export function handleNames(dest: string, names: string[]) {
             const last = names.length === 1 ? '' : path.basename(root);
             const newName = path.join(dest, last, short);
 
-            // console.log(chalk.gray(`    "<dst>/${OsUtils.toUnix(short)}"`));
-            // console.log(chalk.gray(`    "./${OsUtils.toUnix(short)}"`));
             console.log(chalk.gray(`        "./${OsUtils.toUnix(short)}"`));
-            //OsUtils.mkdirSync(newName);
+            OsUtils.mkdirSync(newName);
         });
 
     });
