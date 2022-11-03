@@ -15,12 +15,12 @@
         "build-test": "parcel build src/index.ts --target node --no-source-maps --no-minify --out-file dev.js"
     },
     "devDependencies": {
-        "@types/node": "^13.1.7",
-        "typescript": "^3.7.4"
+        "@types/node": "18.11.9",
+        "typescript": "4.8.4"
     },
     "dependencies": {
-        "chalk": "^3.0.0",
-        "minimist": "^1.2.0",
+        "chalk": "^4.0.0",
+        "minimist": "1.2.7",
         "mkdir-p": "^0.0.7"
     }
 }
