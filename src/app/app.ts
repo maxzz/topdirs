@@ -2,15 +2,13 @@ import path from "path";
 import fs from "fs";
 import chalk from "chalk";
 import { OsUtils } from "../utils/utils-os";
+import { appOptions } from "./app-arguments";
 
 export namespace app {
-    export let options = {
-        all: false
-    };
-
     function isOurdir(name: string): boolean {
-        return options.all || /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
+        return appOptions.all || /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
     }
+
     function scanSubDirs(name: string, level: number, rv_names: string[]) {
         fs.readdirSync(name).forEach((subName: string) => {
             let fn = path.join(name, subName);
@@ -21,7 +19,8 @@ export namespace app {
                 }
             }
         });
-    } //scanSubDirs()
+    }
+
     export function handleNames(dest: string, names: string[]) {
         console.log('Starting sub-folders structure replication...');
 
@@ -41,5 +40,5 @@ export namespace app {
                 });
             }
         });
-    } //handleNames()
-} //namespace app
+    }
+}
