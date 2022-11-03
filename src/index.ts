@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { helpFront } from './app/app-help';
 import { genDestFolderName, getArgTargets } from './app/app-arguments';
-import { app } from './app/app';
+import { handleNames } from './app/app';
 
 function main(): void {
     helpFront();
@@ -12,7 +12,7 @@ function main(): void {
     }
 
     let dest = genDestFolderName();
-    app.handleNames(dest, targets);
+    handleNames(dest, targets);
 
     console.log(chalk.cyan.bold('Done.\n'));
 }
