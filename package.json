@@ -1,26 +1,31 @@
 {
     "name": "topdirs",
-    "version": "1.0.0",
+    "version": "1.5.0",
     "main": "dist/index.js",
     "license": "MIT",
     "engines": {
-        "node": "*"
+        "node": ">= 12"
     },
     "files": [
         "dist/"
     ],
-    "scripts": {
+    "scripts-parcel": {
         "dev": "parcel src/index.ts --target node --out-file dev.js",
+        "build-ts": "rm -rf dist && tsc --sourceMap false",
         "build": "parcel build src/index.ts --target node --no-source-maps",
         "build-test": "parcel build src/index.ts --target node --no-source-maps --no-minify --out-file dev.js"
     },
-    "devDependencies": {
-        "@types/node": "18.11.9",
-        "typescript": "4.8.4"
+    "scripts": {
+        "dev": "tsc -w",
+        "build": "parcel build src/index.ts --no-source-maps"
     },
     "dependencies": {
         "chalk": "^4.0.0",
         "minimist": "1.2.7",
         "mkdir-p": "^0.0.7"
+    },
+    "devDependencies": {
+        "@types/node": "18.11.9",
+        "typescript": "4.8.4"
     }
 }
