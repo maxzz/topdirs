@@ -1,4 +1,3 @@
-//import * as utl from './utils-os';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
@@ -54,27 +53,26 @@ const cli = {
     title: `${chalk.cyan.bold('topdirs')}`,
     help: [
         "",
-        "Syntax:",
-        `    ${chalk.cyan.bold('topdirs')} [options] folder(s)\n`,
         `    topdirs will replicate folders structure wo/ coping files.`,
         "    The root of created folders tree will be located at desktop with name like",
         `    "copy 01.16.20 at 20.07.30.151" where date will be the current date.`,
-        "",
         `    Specify one or more folder names to replicate folders structure.`,
         "",
+        "Syntax:",
+        `    topdirs [options] folder(s)`,
+        "",
         "Options:",
-        "    --help, -h      help",
-        "    --version, -v   version",
-        "    --all, -a       copy all sub-folders otherwise only folders with name started with '[<numbers>]name'",
+        "    --help, -h      Show help",
+        "    --version, -v   Show version",
+        "    --all, -a       Copy all sub-folders otherwise only folders with name",
+        "                    started with '[<numbers>]name'. Default is false.",
     ]
 };
-
-const minimist = require('minimist');
 
 function main(): void {
     console.log(`${cli.title} ${cli.version}`);
 
-    let args = minimist(process.argv.slice(2), {
+    let args = require('minimist')(process.argv.slice(2), {
         boolean: [ 'all', 'version', 'help' ],
         alias: { a: 'all', v: 'version' },
         default: { all: false }
@@ -94,7 +92,7 @@ function main(): void {
 
     if (!targets.length) {
         console.log(cli.help.join('\n'));
-        console.log(chalk.red(`\n   Nothing to do with args:\n${chalk.gray(process.argv.reduce((acc, _) => acc += `\t${_}\n`, ''))}`));
+        console.log(chalk.red(`\nThere is nothing to do with args:\n${chalk.gray(process.argv.reduce((acc, _) => acc += `    ${_}\n`, ''))}`));
         return;
     }
 
