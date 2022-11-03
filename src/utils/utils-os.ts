@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import path from 'path';
+import fs from 'fs';
 import { homedir } from 'os';
 const mkdir = require('mkdir-p');
 

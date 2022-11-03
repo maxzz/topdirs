@@ -8,22 +8,21 @@ function isOurdir(name: string): boolean {
     return appOptions.all || /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
 }
 
-function recursivelyScanSubDirs(name: string, level: number, rv_names: string[]) {
-    let rv: string[] = [];
-    fs.readdirSync(name).forEach((subName: string) => {
-        let fn = path.join(name, subName);
-        if (OsUtils.isDirectory(fn)) {
-            if (level === 1 || isOurdir(subName)) {
-                rv_names.push(fn);
-                recursivelyScanSubDirs(fn, level + 1, rv_names);
+function recursivelyScanSubDirs(name: string, level: number, rv: string[]) {
+    fs.readdirSync(name)
+        .forEach((subName: string) => {
+            const fullName = path.join(name, subName);
+            if (OsUtils.isDirectory(fullName)) {
+                if (level === 1 || isOurdir(subName)) {
+                    rv.push(fullName);
+                    recursivelyScanSubDirs(fullName, level + 1, rv);
+                }
             }
-        }
-    });
-    return rv;
+        });
 }
 
 function scanSubDirs(name: string, level: number): string[] {
-    let rv: string[] = [];
+    const rv: string[] = [];
     recursivelyScanSubDirs(name, level, rv);
     return rv;
 }
@@ -32,19 +31,23 @@ export function handleNames(dest: string, names: string[]) {
     console.log('Starting sub-folders structure replication...');
 
     names.forEach((root) => {
-        if (OsUtils.isDirectory(root)) {
-            let rv = scanSubDirs(root, 1);
-
-            console.log(chalk.green(`    "${root}" creating ${rv.length} sub-folder${rv.length === 1 ? '' : 's'}:\n`));
-            
-            rv.forEach((sub) => {
-                let short = path.relative(root, sub);
-                let last = names.length === 1 ? '' : path.basename(root);
-                let newName = path.join(dest, last, short);
-
-                console.log(chalk.gray(`    creating "${newName}"`));
-                OsUtils.mkdirSync(newName);
-            });
+        if (!OsUtils.isDirectory(root)) {
+            console.log(chalk.red(`Folder ${root} does not exist.`));
+            return;
         }
+
+        const dirNames = scanSubDirs(root, 1);
+
+        console.log(chalk.green(`Creating ${dirNames.length} sub-folder${dirNames.length === 1 ? '' : 's'} from "${root}":`));
+
+        dirNames.forEach((sub) => {
+            const short = path.relative(root, sub);
+            const last = names.length === 1 ? '' : path.basename(root);
+            const newName = path.join(dest, last, short);
+
+            console.log(chalk.gray(`    "${newName}", ${sub}`));
+            OsUtils.mkdirSync(newName);
+        });
+
     });
 }

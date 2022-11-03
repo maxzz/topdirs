@@ -31,6 +31,8 @@ export function getArgTargets(): string[] | undefined {
         console.log(chalk.red(`\nThere is nothing to do with args:\n${chalk.gray(process.argv.reduce((acc, _) => acc += `    ${_}\n`, ''))}`));
         return;
     }
+
+    return targets;
 }
 
 export function genDestFolderName(): string {
