@@ -8,16 +8,24 @@ function isOurdir(name: string): boolean {
     return appOptions.all || /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
 }
 
-function scanSubDirs(name: string, level: number, rv_names: string[]) {
+function recursivelyScanSubDirs(name: string, level: number, rv_names: string[]) {
+    let rv: string[] = [];
     fs.readdirSync(name).forEach((subName: string) => {
         let fn = path.join(name, subName);
         if (OsUtils.isDirectory(fn)) {
             if (level === 1 || isOurdir(subName)) {
                 rv_names.push(fn);
-                scanSubDirs(fn, level + 1, rv_names);
+                recursivelyScanSubDirs(fn, level + 1, rv_names);
             }
         }
     });
+    return rv;
+}
+
+function scanSubDirs(name: string, level: number): string[] {
+    let rv: string[] = [];
+    recursivelyScanSubDirs(name, level, rv);
+    return rv;
 }
 
 export function handleNames(dest: string, names: string[]) {
@@ -25,10 +33,10 @@ export function handleNames(dest: string, names: string[]) {
 
     names.forEach((root) => {
         if (OsUtils.isDirectory(root)) {
-            let rv: string[] = [];
-            scanSubDirs(root, 1, rv);
+            let rv = scanSubDirs(root, 1);
 
             console.log(chalk.green(`    "${root}" creating ${rv.length} sub-folder${rv.length === 1 ? '' : 's'}:\n`));
+            
             rv.forEach((sub) => {
                 let short = path.relative(root, sub);
                 let last = names.length === 1 ? '' : path.basename(root);
