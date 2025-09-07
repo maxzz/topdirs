@@ -1,6 +1,6 @@
 # What is this?
 
-This global utility will replicate folder structure without coping containing files.
+The topdirs utility will replicate folder structure without coping containing files.
 
 # Installation
 

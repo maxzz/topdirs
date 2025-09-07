@@ -11,7 +11,7 @@ function main(): void {
         return;
     }
 
-    let dest = genDestFolderName();
+    const dest = genDestFolderName();
     handleNames(dest, targets);
 
     console.log(chalk.cyan.bold('Done.\n'));
